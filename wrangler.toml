@@ -1,0 +1,22 @@
+name = "kalix-help"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+
+# Custom domain. Requires kalix.org DNS to be on Cloudflare.
+routes = [{ pattern = "api.kalix.org", custom_domain = true }]
+
+[vars]
+MODEL = "claude-haiku-4-5-20251001"
+CORPUS_URL = "https://kalix.org/llm/corpus.txt"
+ALLOWED_ORIGINS = "https://kalix.org,http://localhost:8000"
+
+# ANTHROPIC_API_KEY is a secret, not a var:  npx wrangler secret put ANTHROPIC_API_KEY
+
+# Per-IP rate limit. `period` must be 10 or 60 seconds; this allows 6 questions a minute.
+[[ratelimits]]
+name = "CHAT_LIMIT"
+namespace_id = "1001"
+simple = { limit = 6, period = 60 }
+
+[observability]
+enabled = true
